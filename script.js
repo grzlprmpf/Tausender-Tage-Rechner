@@ -82,10 +82,13 @@ function downloadICS(events, personName) {
   events.forEach(ev => {
     const dt = ev.date;
     const dtStart = dt.toISOString().slice(0,10).replace(/-/g, '');
+    // DTEND = DTSTART + 1 Tag (Google Kalender erwartet exklusives Enddatum)
+    const dtEndDate = new Date(dt.getTime() + 24 * 60 * 60 * 1000);
+    const dtEnd = dtEndDate.toISOString().slice(0,10).replace(/-/g, '');
     ics += 'BEGIN:VEVENT\r\n';
     ics += `SUMMARY:${personName} wird ${ev.days} Tage alt.\r\n`;
     ics += `DTSTART;VALUE=DATE:${dtStart}\r\n`;
-    ics += `DTEND;VALUE=DATE:${dtStart}\r\n`;
+    ics += `DTEND;VALUE=DATE:${dtEnd}\r\n`;
     ics += 'END:VEVENT\r\n';
   });
   ics += 'END:VCALENDAR';

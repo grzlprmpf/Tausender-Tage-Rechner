@@ -22,6 +22,11 @@ input, button {
   font-size: 1rem;
   transition: box-shadow 0.2s, border 0.2s;
 }
+input {
+  width: 90%;
+  max-width: 320px;
+  box-sizing: border-box;
+}
 input:focus {
   outline: none;
   border: 1.5px solid #7f9cf5;
