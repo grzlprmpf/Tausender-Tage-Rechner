@@ -63,36 +63,32 @@ li:hover {
   box-shadow: 0 4px 16px rgba(94, 96, 206, 0.10);
   transform: translateY(-2px) scale(1.02);
 }
+/* --- Normale Tabelle ohne Spezial-Styles --- */
 .milestone-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   margin-top: 28px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.92);
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(94, 96, 206, 0.07);
+  box-shadow: 0 2px 12px rgba(94, 96, 206, 0.10);
 }
 .milestone-table th, .milestone-table td {
-  padding: 6px 6px;
-  text-align: left;
+  padding: 10px 8px;
+  border: none;
+  text-align: center;
+  font-size: 1.08rem;
 }
 .milestone-table th {
-  background: linear-gradient(90deg, #7f9cf5 0%, #5e60ce 100%);
+  background: transparent;
   color: #fff;
   font-weight: 600;
-  text-align: center;
-  border: none;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
-  border-radius: 18px 18px 0 0;
-  margin: 0 4px;
-  position: relative;
-  z-index: 1;
+  font-size: 1.09rem;
+  letter-spacing: 0.01em;
 }
-.milestone-table th {
-  border-radius: 18px 18px 0 0 !important;
-  overflow: hidden;
+.milestone-table thead tr {
+  background: linear-gradient(90deg, #7f9cf5 0%, #5e60ce 100%);
 }
 .milestone-table tr:not(:first-child) {
   background: linear-gradient(90deg, #e0f7fa 0%, #b2ebf2 100%);
@@ -102,9 +98,8 @@ li:hover {
   background: linear-gradient(90deg, #b2ebf2 0%, #e0f7fa 100%);
 }
 .milestone-table td {
-  font-size: 1.08rem;
-  border: none;
-  text-align: center;
+  color: #222;
+  background: none;
 }
 .milestone-table tr.past {
   opacity: 0.45;
@@ -137,19 +132,43 @@ body.dark-mode button:hover {
   background: linear-gradient(90deg, #5e60ce 0%, #232526 100%);
 }
 body.dark-mode .milestone-table {
-  background: rgba(34,36,40,0.85);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 28px;
+  background: rgba(34,36,40,0.92);
+  border-radius: 18px;
+  overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 }
+body.dark-mode .milestone-table th, body.dark-mode .milestone-table td {
+  padding: 10px 8px;
+  border: none;
+  text-align: center;
+  font-size: 1.08rem;
+}
 body.dark-mode .milestone-table th {
-  background: linear-gradient(90deg, #232526 0%, #5e60ce 100%);
+  background: transparent;
   color: #fff;
+  font-weight: 600;
+  font-size: 1.09rem;
+  letter-spacing: 0.01em;
+}
+body.dark-mode .milestone-table thead tr {
+  background: linear-gradient(90deg, #414345 0%, #5e60ce 100%);
 }
 body.dark-mode .milestone-table tr:not(:first-child) {
   background: linear-gradient(90deg, #232526 0%, #414345 100%);
+  transition: background 0.2s;
 }
 body.dark-mode .milestone-table tr:not(:first-child):hover {
   background: linear-gradient(90deg, #414345 0%, #232526 100%);
 }
 body.dark-mode .milestone-table td {
   color: #f1f1f1;
+  background: none;
+}
+body.dark-mode .milestone-table tr.past {
+  opacity: 0.45;
+  filter: grayscale(0.5);
 }

@@ -113,36 +113,43 @@ button.addEventListener('click', () => {
   if (!dateStr) return;
 
   // Tabellenkopf erzeugen
-  const tableHead = `<tr><th>Export</th><th>Tage</th><th>Datum</th><th>Alter</th></tr>`;
+  const tableHead = `<thead><tr><th>Export</th><th>Tage</th><th>Datum</th><th>Alter</th></tr></thead>`;
   list.innerHTML = tableHead;
 
   const today = new Date();
   today.setHours(0,0,0,0);
 
   const customDays = parseInt(customInput.value);
+  let customRow = null;
   if (customDays > 0) {
     const ms = customDays * 24 * 60 * 60 * 1000;
     const milestoneDate = new Date(new Date(dateStr).getTime() + ms);
     const ageStr = formatAge(new Date(dateStr), milestoneDate);
     const isPast = milestoneDate < today;
+    customRow = document.createElement('tr');
+    if (isPast) customRow.classList.add('past');
+    const checkbox = `<input type="checkbox" class="milestone-checkbox" data-days="${customDays}" data-date="${milestoneDate.toISOString()}">`;
+    customRow.innerHTML = `<td>${checkbox}</td><td>${customDays}</td><td>${milestoneDate.toLocaleDateString()}</td><td style="text-align:center;">${ageStr}</td>`;
+    list.appendChild(customRow);
+    // Trennzeile einfügen
+    const sepRow = document.createElement('tr');
+    sepRow.innerHTML = `<td colspan="4" style="height:10px;background:transparent;"></td>`;
+    list.appendChild(sepRow);
+  }
+  // Tausender-Tage immer anzeigen
+  const results = calculateMilestones(dateStr);
+  results.forEach(item => {
+    // customDays nicht doppelt anzeigen
+    if (customDays > 0 && item.days == customDays) return;
+    const milestoneDate = new Date(new Date(dateStr).getTime() + item.days * 24 * 60 * 60 * 1000);
+    const ageStr = formatAge(new Date(dateStr), milestoneDate);
+    const isPast = milestoneDate < today;
     const row = document.createElement('tr');
     if (isPast) row.classList.add('past');
-    const checkbox = `<input type="checkbox" class="milestone-checkbox" data-days="${customDays}" data-date="${milestoneDate.toISOString()}">`;
-    row.innerHTML = `<td>${checkbox}</td><td>${customDays}</td><td>${milestoneDate.toLocaleDateString()}</td><td style="text-align:center;">${ageStr}</td>`;
+    const checkbox = `<input type="checkbox" class="milestone-checkbox" data-days="${item.days}" data-date="${milestoneDate.toISOString()}">`;
+    row.innerHTML = `<td>${checkbox}</td><td>${item.days}</td><td>${item.date}</td><td style="text-align:center;">${ageStr}</td>`;
     list.appendChild(row);
-  } else {
-    const results = calculateMilestones(dateStr);
-    results.forEach(item => {
-      const milestoneDate = new Date(new Date(dateStr).getTime() + item.days * 24 * 60 * 60 * 1000);
-      const ageStr = formatAge(new Date(dateStr), milestoneDate);
-      const isPast = milestoneDate < today;
-      const row = document.createElement('tr');
-      if (isPast) row.classList.add('past');
-      const checkbox = `<input type="checkbox" class="milestone-checkbox" data-days="${item.days}" data-date="${milestoneDate.toISOString()}">`;
-      row.innerHTML = `<td>${checkbox}</td><td>${item.days}</td><td>${item.date}</td><td style="text-align:center;">${ageStr}</td>`;
-      list.appendChild(row);
-    });
-  }
+  });
   if (icsControls) icsControls.style.display = 'flex';
 });
 
@@ -188,3 +195,12 @@ if (selectFutureButton) {
     }
   });
 }
+
+// Enter in Eingabefeldern löst Berechnen aus
+[nameInput, input, customInput].forEach(el => {
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      button.click();
+    }
+  });
+});
